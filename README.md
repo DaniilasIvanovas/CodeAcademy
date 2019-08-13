@@ -1,4 +1,4 @@
-Just a python project for file sorting on Windows 10.
+Just a python project for file sorting.
 Currently program sorts:
         .txt
         .jpg
