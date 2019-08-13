@@ -1,8 +1,11 @@
 from tkinter import *
-import os
-import shutil
+from tkinter import filedialog
 from modules import istorija
 from sys import platform
+import _tkinter
+import os
+import shutil
+
 
 
 def check(path):
@@ -19,6 +22,9 @@ class Langas:
         self.root.title('Rūšiuoklė')
         self.root.geometry('700x150')
         self.root.resizable(0, 0)
+
+        self.current_path = os.getcwd()
+
         apibudinimas1 = Label(self.root, text='Ši programa skirta rušiuoti failams. Noredami testi į Path lauka įrašykite kelia iki direktorijos.')
         apibudinimas1.config(font=('Courrier', 11))
         apibudinimas1.grid(row=0, columnspan=2)
@@ -35,9 +41,13 @@ class Langas:
         path_uzrasas.config(font=('Courrier', 11))
         path_uzrasas.grid(row=3, column=0, sticky=E)
 
+        browse_button = Button(self.root, text='Browse', command=lambda: self.get_path())
+        browse_button.config(font=('Courrier', 11))
+        browse_button.grid(row=3, column=3, sticky=W)
+
         self.path_laukas = Entry(self.root)
         self.path_laukas.config(font=('Courrier', 11))
-        self.path_laukas.insert(END, os.getcwd())
+        self.path_laukas.insert(END, self.current_path)
         self.path_laukas.grid(row=3, column=1, ipadx=100)
 
         self.uzrasas_error = Label(self.root, text='')
@@ -45,7 +55,12 @@ class Langas:
         self.uzrasas_error.grid(row=4, columnspan=2)
 
         mygtukas = Button(self.root, text='Rusiuoti', command=lambda: self.check_platform())
-        mygtukas.grid(row=3, column=3, sticky=W)
+        mygtukas.grid(row=3, column=4, sticky=W)
+
+    def get_path(self):
+        new_path = filedialog.askdirectory(initialdir=os.path.dirname(self.current_path), mustexist=True)
+        self.path_laukas.delete(0, END)
+        self.path_laukas.insert(END, new_path + '/')
 
     def check_platform(self):
         if platform == 'linux' or platform == 'linux2':  # Linux
